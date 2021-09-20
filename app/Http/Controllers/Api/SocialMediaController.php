@@ -16,12 +16,13 @@ class SocialMediaController extends Controller
 
     public function create(Request $request)
     {
-        $request->merge(['restaurant_id'=>auth()->id()]);
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        if (SocialMedia::create($request->all()))
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        if (SocialMedia::create($data))
             return apiResponse(null,'Social links and phones inserted successfully',200);
 
 
@@ -29,7 +30,6 @@ class SocialMediaController extends Controller
 
     public function update(Request $request,$id)
     {
-        $request->merge(['restaurant_id'=>auth()->id()]);
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
@@ -38,7 +38,9 @@ class SocialMediaController extends Controller
         if (!$social)
             return apiResponse(null,'Social not exist',200);
 
-        $social->update($request->all());
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        $social->update($data);
 
         return apiResponse(null,'Social links and phones updated successfully',200);
 

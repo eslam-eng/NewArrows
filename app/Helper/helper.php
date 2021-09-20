@@ -31,11 +31,12 @@
     if (!function_exists('uploadImg'))
     {
     //  $file = $request->file('photo');
-        function uploadImg($file,$folder)
+        function uploadImg($uploadedFile,$folder)
         {
-            $file = $file;
-            $data['photo']=$img_name = time().".".$file->getClientOriginalExtension();
+            $file = $uploadedFile;
+            $img_name = time().".".$file->getClientOriginalExtension();
             $file->move(public_path('uploads/'.$folder),$img_name);
+            return $img_name ;
 
         }
     }

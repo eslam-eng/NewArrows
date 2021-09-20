@@ -16,12 +16,13 @@ class RestaurantBaiscInfoController extends Controller
 
     public function create(Request $request)
     {
-        $request->merge(['restaurant_id'=>auth()->id()]);
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        if (RestaurantBasicInfo::create($request->all()))
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        if (RestaurantBasicInfo::create($data))
             return apiResponse(null,'Basic Information inserted successfully',200);
 
 
@@ -35,11 +36,12 @@ class RestaurantBaiscInfoController extends Controller
             return apiResponse($validator->errors()->all(),null,400);
 
         $basicInfo = RestaurantBasicInfo::find($id);
-        $request->merge(['restaurant_id'=>auth()->id()]);
         if (!$basicInfo)
             return apiResponse(null,'Basic Information not exist',200);
 
-        $basicInfo->update($request->all());
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        $basicInfo->update($data);
 
         return apiResponse(null,'Basic Information updated successfully',200);
 

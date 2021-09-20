@@ -16,12 +16,14 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        $request->merge(['restaurant_id'=>auth()->id()]);
+
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        if (Category::create($request->all()))
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        if (Category::create($data))
             return apiResponse(null,'category inserted successfully',200);
 
 
@@ -29,7 +31,6 @@ class CategoryController extends Controller
 
     public function update(Request $request,$id)
     {
-        $request->merge(['restaurant_id'=>auth()->id()]);
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
@@ -38,8 +39,9 @@ class CategoryController extends Controller
         if (!$category)
             return apiResponse(null,'category not exist',200);
 
-        $category->update($request->all());
-
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        $category->update($data);
         return apiResponse(null,'category updated successfully',200);
 
     }

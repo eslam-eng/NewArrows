@@ -20,14 +20,14 @@ class CouponController extends Controller
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        $request->merge(['restaurant_id'=>auth()->id()]);
-       if (Coupon::create($request->all()))
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+       if (Coupon::create($data))
          return apiResponse(null,'coupon created successfully',200);
     }
 
     public function update(Request $request,$id)
     {
-        $request->merge(['restaurant_id'=>auth()->id()]);
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
@@ -35,11 +35,21 @@ class CouponController extends Controller
         if (!$coupon)
             return apiResponse(null,'coupon Not exist',400);
 
-        $coupon->update($request->all());
+        $data = $request->all();
+        $data['restaurant_id'] = auth()->id();
+        $coupon->update($data);
         return apiResponse(null,'coupon updated successfully',200);
 
     }
 
+    public function delete($id)
+    {
+        $coupon=Coupon::find($id);
+        if (!$coupon)
+            return apiResponse(null,'Coupon not exist',200);
+        if ($coupon->delete())
+            return apiResponse(null,'Coupon deleted successfully',200);
+    }
 
     private function rules()
     {
