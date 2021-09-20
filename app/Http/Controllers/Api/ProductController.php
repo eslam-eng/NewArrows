@@ -66,9 +66,9 @@ class ProductController extends Controller
         'name'=>'required|string',
         'photo'=>'nullable|image|mimes:jpj,png,gif,jpeg|max:2024',
         'category_id'=>'integer',
-//        'components'=>'nullable|array',
-//        'sizes'=>'nullable|array',
-//        'additional'=>'nullable|array'
+        'components'=>'nullable|array',
+        'sizes'=>'nullable|array',
+        'additional'=>'nullable|array'
         ];
     }
 
