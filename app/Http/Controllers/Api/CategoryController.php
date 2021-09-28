@@ -35,7 +35,7 @@ class CategoryController extends Controller
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        $category = Category::find($id);
+        $category = Category::where('restaurant_id',auth()->id())->find($id);
         if (!$category)
             return apiResponse(null,'category not exist',200);
 
@@ -48,12 +48,20 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        $category=Category::find($id);
+        $category=Category::where('restaurant_id',auth()->id())->find($id);
         if (!$category)
             return apiResponse(null,'category not exist',200);
 
         if ($category->delete())
             return apiResponse(null,'category deleted successfully',200);
+    }
+
+    public function getCategoryProducts($id)
+    {
+        $data = Category::with('products')->where('restaurant_id',auth()->id())->find($id);
+        if (!$data)
+            return apiResponse(null,'category not exist',200);
+        return $data;
     }
 
 

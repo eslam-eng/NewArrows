@@ -31,7 +31,7 @@ class CouponController extends Controller
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
-        $coupon = Coupon::find($id);
+        $coupon = Coupon::where('restaurant_id',auth()->id())->find($id);
         if (!$coupon)
             return apiResponse(null,'coupon Not exist',400);
 
@@ -44,11 +44,22 @@ class CouponController extends Controller
 
     public function delete($id)
     {
-        $coupon=Coupon::find($id);
+        $coupon=Coupon::where('restaurant_id',auth()->id())->find($id);
         if (!$coupon)
             return apiResponse(null,'Coupon not exist',200);
         if ($coupon->delete())
             return apiResponse(null,'Coupon deleted successfully',200);
+    }
+
+//    get promo-code
+
+    public function getPromoCode(Request $request)
+    {
+        $coupon=Coupon::where('coupon_code',$request->coupon_code)->where('restaurant_id',auth()->id())->first();
+        if (!$coupon)
+            return apiResponse(0,'Coupon not exist',200);
+
+        return apiResponse($coupon->coupon_value,'Coupon discount '.$coupon->coupon_value,200);
     }
 
     private function rules()

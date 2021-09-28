@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'dashboard', 'namespace'=>
 //   Categories ------------------------------------------------------------
     Route::get('/categories','CategoryController@index');
     Route::post('/category/create','CategoryController@create');
+    Route::get('/category/{id}/products','CategoryController@getCategoryProducts');
     Route::post('/category/update/{id}','CategoryController@update');
     Route::post('/category/delete/{id}','CategoryController@delete');
 
@@ -42,9 +43,10 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'dashboard', 'namespace'=>
 
 //    Coupon Routes-----------------------------------------------------------------------
     Route::get('/coupons','CouponController@index');
-    Route::post('/coupon/create','CouponController@create');
-    Route::post('/coupon/update/{id}','CouponController@update');
-    Route::post('/coupon/delete/{id}','CouponController@delete');
+    Route::post('/coupons/create','CouponController@create');
+    Route::post('/coupons/update/{id}','CouponController@update');
+    Route::post('/coupons/delete/{id}','CouponController@delete');
+    Route::post('/coupons/discount','CouponController@getPromoCode');
 
 //   End Coupon Routes-----------------------------------------------------------------------
 
@@ -53,6 +55,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'dashboard', 'namespace'=>
      Route::post('/products/create','ProductController@create');
      Route::post('/products/update/{id}','ProductController@update');
      Route::post('/products/delete/{id}','ProductController@delete');
+     Route::get('/products/{id}','ProductController@getProductById');
 //   End Components food Routes-----------------------------------------------------------------------
 
 

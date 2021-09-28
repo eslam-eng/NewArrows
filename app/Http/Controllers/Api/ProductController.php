@@ -14,6 +14,15 @@ class ProductController extends Controller
         return $products;
     }
 
+    public function getProductById($id)
+    {
+        $product=Product::with('category')->where('restaurant_id',auth()->id())->find($id);
+        if (!$product)
+            return apiResponse(null,'product not exist',400);
+
+        return $product ;
+    }
+
     public function create(Request $request)
     {
         $validator = validator($request->all(), $this->rules());
@@ -31,7 +40,7 @@ class ProductController extends Controller
 
     public function update(Request $request,$id)
     {
-        $product = Product::find($id);
+        $product = Product::where('restaurant_id',auth()->id())->find($id);
         if (!$product)
             return apiResponse(null, 'product not exist', 400);
 
@@ -52,7 +61,7 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $product=Product::find($id);
+        $product=Product::where('restaurant_id',auth()->id())->find($id);
         if (!$product)
             return apiResponse(null,'product not exist',200);
         $product->photo!=''?unlink(public_path('uploads\products\\'.$product->photo)):null;
@@ -65,7 +74,7 @@ class ProductController extends Controller
         return[
         'name'=>'required|string',
         'photo'=>'nullable|image|mimes:jpj,png,gif,jpeg|max:2024',
-        'category_id'=>'integer',
+        'category_id'=>'required|exists:categories,id',
         'components'=>'nullable|array',
         'sizes'=>'nullable|array',
         'additional'=>'nullable|array'

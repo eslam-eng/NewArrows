@@ -10,6 +10,7 @@ class Product extends Model
     use HasFactory;
     protected $fillable = ['name','photo','category_id','components','sizes','additional','restaurant_id'];
 
+//    protected $hidden = ['created_at','updated_at','restaurant_id'];
     public function getComponentsAttribute($value)
     {
         return json_decode($value);
@@ -38,5 +39,10 @@ class Product extends Model
     public function setAdditionalAttribute($value)
     {
         $this->attributes['additional'] = json_encode($value);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category','category_id');
     }
 }
