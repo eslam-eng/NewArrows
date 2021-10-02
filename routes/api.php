@@ -30,7 +30,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'namespace'=>'Api'], fu
 //
 });
 
-Route::group(['middleware' => 'auth:api', 'prefix' => 'dashboard', 'namespace'=>'Api'],function (){
+Route::group(['middleware' => 'api', 'prefix' => 'dashboard', 'namespace'=>'Api'],function (){
 
 //   Categories ------------------------------------------------------------
     Route::get('/categories','CategoryController@index');

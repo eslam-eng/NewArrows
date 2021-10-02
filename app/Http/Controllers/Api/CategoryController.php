@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['index', 'getCategoryProducts']]);
+    }
+
     public function index()
     {
-        $categories = Category::where('restaurant_id',auth()->id())->get();
+        $categories = Category::with('restaurant')->get();
         return $categories;
     }
 

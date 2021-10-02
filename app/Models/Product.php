@@ -45,4 +45,9 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Category','category_id');
     }
+
+    public function restaurant()
+    {
+        return $this->belongsTo('App\Models\User','restaurant_id');
+    }
 }

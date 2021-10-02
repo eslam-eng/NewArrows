@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['index', 'getProductById']]);
+    }
     public function index()
     {
-        $products = Product::where('restaurant_id', auth()->id())->get();
+        $products = Product::with('restaurant')->get();
         return $products;
     }
 

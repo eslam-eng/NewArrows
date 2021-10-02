@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['getPromoCode']]);
+    }
+
+
     public function index()
     {
         $coupons= Coupon::where('restaurant_id',auth()->id())->get();
@@ -55,7 +61,7 @@ class CouponController extends Controller
 
     public function getPromoCode(Request $request)
     {
-        $coupon=Coupon::where('coupon_code',$request->coupon_code)->where('restaurant_id',auth()->id())->first();
+        $coupon=Coupon::where('coupon_code',$request->coupon_code)->where('restaurant_id',$request->restaurant_id)->first();
         if (!$coupon)
             return apiResponse(0,'Coupon not exist',200);
 
