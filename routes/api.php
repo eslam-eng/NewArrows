@@ -32,6 +32,10 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'namespace'=>'Api'], fu
 
 Route::group(['middleware' => 'api', 'prefix' => 'dashboard', 'namespace'=>'Api'],function (){
 
+//   upload images route ------------------------------------------------------------
+
+    Route::post('upload/image','UploadImageController@uploadImg');
+
 //   Categories ------------------------------------------------------------
     Route::get('/categories','CategoryController@index');
     Route::post('/category/create','CategoryController@create');
@@ -43,7 +47,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'dashboard', 'namespace'=>'Api'
 
 //    Coupon Routes-----------------------------------------------------------------------
     Route::get('/coupons','CouponController@index');
-    Route::post('/coupons/create','CouponController@create');
+    Route::post('/coupons/create/{id}','CouponController@create');
     Route::post('/coupons/update/{id}','CouponController@update');
     Route::post('/coupons/delete/{id}','CouponController@delete');
     Route::post('/coupons/discount','CouponController@getPromoCode');
@@ -72,6 +76,38 @@ Route::group(['middleware' => 'api', 'prefix' => 'dashboard', 'namespace'=>'Api'
     Route::post('/basic-informations/update/{id}','RestaurantBaiscInfoController@update');
     Route::post('/basic-informations/delete/{id}','RestaurantBaiscInfoController@update');
 //   End Components food Routes-----------------------------------------------------------------------
+
+
+
+//   Start Branches Routes-----------------------------------------------------------------------
+    Route::get('/branches','BranchController@index');
+    Route::get('/restaurant/branches','BranchController@getBranchByRestaurantId');
+    Route::post('/branches/create','BranchController@create');
+    Route::post('/branches/update/{id}','BranchController@update');
+    Route::post('/branches/delete/{id}','BranchController@delete');
+//   End Components food Routes-----------------------------------------------------------------------
+
+//   Start Branches Routes-----------------------------------------------------------------------
+    Route::get('/drinks','DrinkController@index');
+    Route::post('/drinks/create','DrinkController@create');
+    Route::post('/drinks/update/{id}','DrinkController@update');
+    Route::post('/drinks/delete/{id}','DrinkController@delete');
+//   End Components food Routes-----------------------------------------------------------------------
+
+//   Start ADS Routes-----------------------------------------------------------------------
+    Route::get('/ads','AnnouncementController@index');
+    Route::post('/ads/create','AnnouncementController@create');
+    Route::post('/ads/update/{id}','AnnouncementController@update');
+    Route::post('/ads/delete/{id}','AnnouncementController@delete');
+//   End Components food Routes-----------------------------------------------------------------------
+
+//   Start accounts Routes-----------------------------------------------------------------------
+    Route::get('/accounts','AccountController@index');
+    Route::post('/accounts/create','AccountController@create');
+    Route::post('/accounts/update/{id}','AccountController@update');
+    Route::post('/accounts/delete/{id}','AccountController@delete');
+//   End Components food Routes-----------------------------------------------------------------------
+
 
 
 });

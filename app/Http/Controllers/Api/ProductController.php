@@ -33,9 +33,9 @@ class ProductController extends Controller
             return apiResponse($validator->errors()->all(), null, 400);
         $data = $request->all();
         $data['restaurant_id']=auth()->id();
-        if ($request->has('photo')){
-            $data['photo'] = uploadImg($request->file('photo'),'products');
-        }
+//        if ($request->has('photo')){
+//            $data['photo'] = uploadImg($request->file('photo'),'products');
+//        }
         if (Product::create($data))
             return apiResponse(null, 'Product inserted successfully', 200);
 
@@ -76,7 +76,8 @@ class ProductController extends Controller
     {
         return[
         'name'=>'required|string',
-        'photo'=>'nullable|image|mimes:jpj,png,gif,jpeg|max:2024',
+//        'photo'=>'nullable|image|mimes:jpj,png,gif,jpeg|max:2024',
+        'photo'=>'nullable|string',
         'category_id'=>'required|exists:categories,id',
         'components'=>'nullable|array',
         'sizes'=>'nullable|array',

@@ -64,4 +64,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany('App\Models\Coupon','restaurant_id');
     }
+
+    public function branch()
+    {
+        return $this->hasMany('App\Models\Branch','restaurant_id');
+    }
+
+    public function account()
+    {
+        return $this->hasMany('App\Models\Account','restaurant_id');
+    }
 }
