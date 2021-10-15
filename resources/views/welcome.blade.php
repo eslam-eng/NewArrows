@@ -20,7 +20,8 @@
     <section>
         <canvas id='beerCanvas'></canvas>
         <div class="coming_content">
-            <h1 style="text-align=center">Coming Soon website</h1>
+            <h1>Coming Soon website</h1>
+            <img src="http://restauarant.arrowscars.com/public/uploads/global/1634315445.jpg"/>
         </div>
     </section>
 

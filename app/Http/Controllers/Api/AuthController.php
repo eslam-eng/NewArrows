@@ -31,7 +31,8 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($validator->validated())) {
             return apiResponse(null,'email or password incorrect',400);
         }
-        return $this->respondWithToken($token);
+        return apiResponse($this->respondWithToken($token),'login success',200);
+//        return $this->respondWithToken($token);
     }
 
     /**
@@ -94,11 +95,10 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return [
             'access_token' => $token,
-            'token_type' => 'bearer',
             'user'=>auth()->user()->load(['restauarntInfo','restauarntSocial'])
-        ]);
+        ];
     }
 
 

@@ -14,7 +14,10 @@ class ProductController extends Controller
     public function index($name)
     {
         $products = Product::where('restaurant_name',$name)->get();
-        return $products;
+        if ($products->count())
+            return apiResponse($products,'all products of'.$name,200) ;
+
+        return apiResponse($products,'no products for'.$name,400);
     }
 
     public function getProductById($id)

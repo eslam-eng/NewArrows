@@ -16,8 +16,10 @@ class BranchController extends Controller
     public function index($name)
     {
         $branches = Branch::where('restaurant_name',$name)->get();
-        return $branches;
+        if ($branches->count())
+            return apiResponse($branches,'all branches of'.$name,200) ;
 
+        return apiResponse($branches,'no branches for'.$name,400);
     }
 
     public function getBranchByRestaurantId(Request $request)

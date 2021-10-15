@@ -16,7 +16,10 @@ class RestaurantBaiscInfoController extends Controller
     public function index($name)
     {
         $basicInfos = RestaurantBasicInfo::where('restaurant_name', $name)->get();
-        return $basicInfos;
+        if ($basicInfos->count())
+            return apiResponse($basicInfos,'all info of'.$name,200) ;
+
+        return apiResponse($basicInfos,'no info for'.$name,400);
     }
 
     public function create(Request $request,$name)

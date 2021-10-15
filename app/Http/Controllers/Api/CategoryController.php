@@ -16,7 +16,10 @@ class CategoryController extends Controller
     public function index($name)
     {
         $categories = Category::where('restaurant_name',$name)->get();
-        return $categories;
+        if ($categories->count())
+            return apiResponse($categories,'all categories of'.$name,200) ;
+
+        return apiResponse($categories,'no categories for'.$name,400);
     }
 
     public function create(Request $request,$name)

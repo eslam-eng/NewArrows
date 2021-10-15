@@ -15,7 +15,10 @@ class SocialMediaController extends Controller
     public function index($name)
     {
         $socials = SocialMedia::where('restaurant_name', $name)->get();
-        return $socials;
+        if ($socials->count())
+            return apiResponse($socials,'all social links of'.$name,200) ;
+
+        return apiResponse($socials,'no social links for'.$name,400);
     }
 
     public function create(Request $request,$name)

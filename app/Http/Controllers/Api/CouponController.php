@@ -17,7 +17,10 @@ class CouponController extends Controller
     public function index($name)
     {
         $coupons= Coupon::where('restaurant_name',$name)->get();
-        return $coupons;
+        if ($coupons->count())
+            return apiResponse($coupons,'all coupons of'.$name,200) ;
+
+        return apiResponse($coupons,'no coupons for'.$name,400);
     }
 
     public function create(Request $request,$name)

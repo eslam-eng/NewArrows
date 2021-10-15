@@ -16,7 +16,9 @@ class AccountController extends Controller
     public function index($name)
     {
         $accounts = Account::where('restaurant_name',$name)->get();
-        return $accounts;
+        if ($accounts->count())
+            return apiResponse($accounts,'all accounts of'.$name,200) ;
+        return apiResponse($accounts,'no accounts for'.$name,400);
 
     }
 

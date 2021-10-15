@@ -11,7 +11,7 @@ class UploadImageController extends Controller
     {
         if ($request->has('photo')){
             $imgname = uploadImg($request->file('photo'),'global');
-            $url = env('APP_URL').'/uploads/global/'.$imgname;
+            $url = asset('uploads/global/'.$imgname);
             return apiResponse($url,'photo uploaded successfully',200);
         }
     }

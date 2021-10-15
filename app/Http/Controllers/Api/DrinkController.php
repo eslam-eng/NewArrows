@@ -16,7 +16,10 @@ class DrinkController extends Controller
     public function index($name)
     {
         $drinks = Drink::where('restaurant_name',$name)->get();
-        return $drinks;
+        if ($drinks->count())
+            return apiResponse($drinks,'all drinks of'.$name,200) ;
+
+        return apiResponse($drinks,'no drinks for'.$name,400);
 
     }
 

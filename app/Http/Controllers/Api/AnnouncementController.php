@@ -15,7 +15,10 @@ class AnnouncementController extends Controller
     public function index($name)
     {
         $ads = Announcement::where('restaurant_name',$name)->get();
-        return $ads;
+        if ($ads->count())
+            return apiResponse($ads,'all ads of'.$name,200) ;
+
+        return apiResponse($ads,'no ads for'.$name,400);
 
     }
 
