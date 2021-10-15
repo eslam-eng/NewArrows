@@ -8,14 +8,18 @@ use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
 {
-    public function index()
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['index']]);
+    }
+
+    public function index($name)
     {
-        $ads = Announcement::with('restaurant')->get();
+        $ads = Announcement::where('restaurant_name',$name)->get();
         return $ads;
 
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
 
         $validator =validator($request->all(),$this->rules());
@@ -24,6 +28,7 @@ class AnnouncementController extends Controller
 
         $data = $request->all();
         $data['restaurant_id'] = auth()->id();
+        $data['restaurant_name'] = $name;
         if (Announcement::create($data))
             return apiResponse(null,'ads inserted successfully',200);
 
@@ -35,19 +40,20 @@ class AnnouncementController extends Controller
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        $ads = Announcement::where('restaurant_id',auth()->id())->find($id);
+        $ads = Announcement::find($id);
         if (!$ads)
             return apiResponse(null,'ads not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_name'] = $ads->restaurant_name;
         $ads->update($data);
         return apiResponse(null,'ads updated successfully',200);
     }
 
     public function delete($id)
     {
-        $ads=Announcement::where('restaurant_id',auth()->id())->find($id);
+        $ads=Announcement::find($id);
         if (!$ads)
             return apiResponse(null,'ads not exist',200);
 
@@ -58,7 +64,7 @@ class AnnouncementController extends Controller
     private function rules()
     {
         return [
-            'name'=>'required|string'
+            'ads'=>'required|string'
         ];
     }
 }

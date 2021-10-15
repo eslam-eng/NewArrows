@@ -17,6 +17,7 @@ class CreateAnnouncementsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('restaurant_id');
             $table->string('ads');
+            $table->string('restaurant_name');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class CreateRestaurantBasicInfosTable extends Migration
             $table->string('address');
             $table->string('desc')->nullable();
             $table->string('photo')->nullable();
+            $table->string('restaurant_name')->nullable();
             $table->unsignedBigInteger('restaurant_id')->nullable();
 
             $table->timestamps();

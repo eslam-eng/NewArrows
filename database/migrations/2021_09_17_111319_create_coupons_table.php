@@ -17,6 +17,7 @@ class CreateCouponsTable extends Migration
             $table->id();
             $table->string('coupon_code');
             $table->integer('coupon_value');
+            $table->string('restaurant_name');
             $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
         });

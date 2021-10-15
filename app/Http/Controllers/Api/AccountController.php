@@ -8,14 +8,19 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    public function index()
+
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['index']]);
+    }
+
+    public function index($name)
     {
-        $accounts = Account::with('restaurant')->get();
+        $accounts = Account::where('restaurant_name',$name)->get();
         return $accounts;
 
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
@@ -23,6 +28,7 @@ class AccountController extends Controller
 
         $data = $request->all();
         $data['restaurant_id'] = auth()->id();
+        $data['restaurant_name'] = $name;
         if (Account::create($data))
             return apiResponse(null,'Accounts inserted successfully',200);
 
@@ -40,7 +46,8 @@ class AccountController extends Controller
             return apiResponse(null,'account not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_name'] = $branch->restaurant_name;
         $branch->update($data);
         return apiResponse(null,'account updated successfully',200);
 
@@ -48,7 +55,7 @@ class AccountController extends Controller
 
     public function delete($id)
     {
-        $account=Account::where('restaurant_id',auth()->id())->find($id);
+        $account=Account::find($id);
         if (!$account)
             return apiResponse(null,'account not exist',200);
 

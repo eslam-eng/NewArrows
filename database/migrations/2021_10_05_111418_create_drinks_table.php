@@ -17,8 +17,8 @@ class CreateDrinksTable extends Migration
             $table->id();
             $table->string('photo');
             $table->string('name');
+            $table->string('restaurant_name');
             $table->unsignedBigInteger('restaurant_id');
-            $table->unsignedBigInteger('category_id');
             $table->timestamps();
         });
     }

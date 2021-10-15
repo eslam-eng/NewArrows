@@ -11,28 +11,29 @@ class ProductController extends Controller
     public function __construct() {
         $this->middleware('auth:api', ['except' => ['index', 'getProductById']]);
     }
-    public function index()
+    public function index($name)
     {
-        $products = Product::with('restaurant')->get();
+        $products = Product::where('restaurant_name',$name)->get();
         return $products;
     }
 
     public function getProductById($id)
     {
-        $product=Product::with('category')->where('restaurant_id',auth()->id())->find($id);
+        $product=Product::with('category')->find($id);
         if (!$product)
             return apiResponse(null,'product not exist',400);
 
         return $product ;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
         $validator = validator($request->all(), $this->rules());
         if ($validator->fails())
             return apiResponse($validator->errors()->all(), null, 400);
         $data = $request->all();
         $data['restaurant_id']=auth()->id();
+        $data['restaurant_name']= $name;
 //        if ($request->has('photo')){
 //            $data['photo'] = uploadImg($request->file('photo'),'products');
 //        }
@@ -52,7 +53,7 @@ class ProductController extends Controller
             return apiResponse($validator->errors()->all(), null, 400);
 
         $data = $request->all();
-        $data['restaurant_id']=auth()->id();
+//        $data['restaurant_id']=auth()->id();
         if ($request->has('photo')){
             $product->photo!=''?unlink(public_path('uploads\products\\'.$product->photo)):null;
             $data['photo'] = uploadImg($request->file('photo'),'products');
@@ -64,7 +65,7 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        $product=Product::where('restaurant_id',auth()->id())->find($id);
+        $product=Product::find($id);
         if (!$product)
             return apiResponse(null,'product not exist',200);
         $product->photo!=''?unlink(public_path('uploads\products\\'.$product->photo)):null;

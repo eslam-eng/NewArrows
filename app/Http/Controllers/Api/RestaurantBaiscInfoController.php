@@ -8,13 +8,18 @@ use Illuminate\Http\Request;
 
 class RestaurantBaiscInfoController extends Controller
 {
-    public function index()
+
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['getPromoCode']]);
+    }
+
+    public function index($name)
     {
-        $basicInfos = RestaurantBasicInfo::where('restaurant_id', auth()->id())->get();
+        $basicInfos = RestaurantBasicInfo::where('restaurant_name', $name)->get();
         return $basicInfos;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
@@ -22,6 +27,7 @@ class RestaurantBaiscInfoController extends Controller
 
         $data = $request->all();
         $data['restaurant_id'] = auth()->id();
+        $data['restaurant_name'] = $name;
         if (RestaurantBasicInfo::create($data))
             return apiResponse(null,'Basic Information inserted successfully',200);
 
@@ -40,7 +46,6 @@ class RestaurantBaiscInfoController extends Controller
             return apiResponse(null,'Basic Information not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
         $basicInfo->update($data);
 
         return apiResponse(null,'Basic Information updated successfully',200);
@@ -63,7 +68,7 @@ class RestaurantBaiscInfoController extends Controller
             'name'=>'required|string',
             'address'=>'required|string',
             'desc'=>'nullable|string',
-            'photo'=>'nullable|image|mimes:jpj,png,gif,jpeg|max:2024',
+            'photo'=>'nullable|string',
         ];
     }
 }

@@ -13,13 +13,13 @@ class CategoryController extends Controller
         $this->middleware('auth:api', ['except' => ['index', 'getCategoryProducts']]);
     }
 
-    public function index()
+    public function index($name)
     {
-        $categories = Category::with('restaurant')->get();
+        $categories = Category::where('restaurant_name',$name)->get();
         return $categories;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
 
         $validator =validator($request->all(),$this->rules());
@@ -27,6 +27,7 @@ class CategoryController extends Controller
             return apiResponse($validator->errors()->all(),null,400);
 
         $data = $request->all();
+        $data['restaurant_name'] = $name;
         $data['restaurant_id'] = auth()->id();
         if (Category::create($data))
             return apiResponse(null,'category inserted successfully',200);
@@ -45,7 +46,8 @@ class CategoryController extends Controller
             return apiResponse(null,'category not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_name'] =$category->restaurant_name;
         $category->update($data);
         return apiResponse(null,'category updated successfully',200);
 
@@ -53,7 +55,7 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        $category=Category::where('restaurant_id',auth()->id())->find($id);
+        $category=Category::find($id);
         if (!$category)
             return apiResponse(null,'category not exist',200);
 
@@ -61,9 +63,9 @@ class CategoryController extends Controller
             return apiResponse(null,'category deleted successfully',200);
     }
 
-    public function getCategoryProducts($id)
+    public function getCategoryProducts($id,$name)
     {
-        $data = Category::with('products')->where('restaurant_id',auth()->id())->find($id);
+        $data = Category::with('products')->where('restaurant_name',$name)->find($id);
         if (!$data)
             return apiResponse(null,'category not exist',200);
         return $data;
@@ -72,7 +74,8 @@ class CategoryController extends Controller
 
     private function rules(){
         return [
-            "name"=>'required|string'
+            "name"=>'required|string',
+            "photo"=>'string',
         ];
     }
 }

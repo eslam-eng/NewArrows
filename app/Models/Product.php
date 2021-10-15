@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','photo','category_id','components','sizes','additional','restaurant_id'];
+    protected $fillable = ['name','photo','category_id','components','sizes','additional',
+        'restaurant_id','restaurant_name'];
 
 //    protected $hidden = ['created_at','updated_at','restaurant_id'];
     public function getComponentsAttribute($value)

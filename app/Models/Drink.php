@@ -9,12 +9,12 @@ class Drink extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['photo','name','restaurant_id','category_id'];
+    protected $fillable = ['photo','name','restaurant_name','restaurant_id'];
 
-    public function restaurant()
-    {
-        return $this->belongsTo('App\Models\User','restaurant_id');
-    }
+//    public function restaurant()
+//    {
+//        return $this->belongsTo('App\Models\User','restaurant_id');
+//    }
 
     public function category()
     {

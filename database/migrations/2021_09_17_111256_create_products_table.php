@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->longText('sizes');
             $table->longText('additional');
             $table->unsignedBigInteger('restaurant_id');
+            $table->string('restaurant_name');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
         });

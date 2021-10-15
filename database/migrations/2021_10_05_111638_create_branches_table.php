@@ -18,6 +18,7 @@ class CreateBranchesTable extends Migration
             $table->string('name');
             $table->string('lat');
             $table->string('lng');
+            $table->string('restaurant_name');
             $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
         });

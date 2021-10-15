@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','restaurant_id'];
-    protected $hidden = ['restaurant_id'];
+    protected $fillable = ['name','restaurant_name','photo','restaurant_id'];
+    protected $hidden = ['restaurant_name'];
 //    public function getNameAttribute($value)
 //    {
 //        return json_decode($value);
@@ -20,10 +20,10 @@ class Category extends Model
 //        $this->attributes['name'] = json_encode($value);
 //    }
 
-    public function restaurant()
-    {
-        return $this->belongsTo('App\Models\User','restaurant_id');
-    }
+//    public function restaurant()
+//    {
+//        return $this->belongsTo('App\Models\User','restaurant_id');
+//    }
 
     public function products()
     {

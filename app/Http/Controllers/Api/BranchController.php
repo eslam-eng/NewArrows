@@ -13,10 +13,9 @@ class BranchController extends Controller
         $this->middleware('auth:api', ['except' => ['index', 'getBranchByRestaurantId']]);
     }
 
-    public function index()
+    public function index($name)
     {
-//        $branches = User::with('branche')->get
-        $branches = Branch::with('restaurant')->get();
+        $branches = Branch::where('restaurant_name',$name)->get();
         return $branches;
 
     }
@@ -27,7 +26,7 @@ class BranchController extends Controller
         return $branches;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
@@ -35,6 +34,7 @@ class BranchController extends Controller
 
         $data = $request->all();
         $data['restaurant_id'] = auth()->id();
+        $data['restaurant_name'] = $name;
         if (Branch::create($data))
             return apiResponse(null,'branches inserted successfully',200);
 
@@ -47,12 +47,13 @@ class BranchController extends Controller
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        $branch = Branch::where('restaurant_id',auth()->id())->find($id);
+        $branch = Branch::find($id);
         if (!$branch)
             return apiResponse(null,'branch not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_name'] = $branch->restaurant_name;
         $branch->update($data);
         return apiResponse(null,'branch updated successfully',200);
 
@@ -60,7 +61,7 @@ class BranchController extends Controller
 
     public function delete($id)
     {
-        $branch=Branch::where('restaurant_id',auth()->id())->find($id);
+        $branch=Branch::find($id);
         if (!$branch)
             return apiResponse(null,'branch not exist',200);
 

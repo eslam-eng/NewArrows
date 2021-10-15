@@ -23,6 +23,7 @@ class CreateSocialMediaTable extends Migration
             $table->string('twitter')->nullable();
             $table->string('instagram')->nullable();
             $table->string('snapchat')->nullable();
+            $table->string('restaurant_name')->nullable();
             $table->unsignedBigInteger('restaurant_id')->nullable();
 
             $table->timestamps();

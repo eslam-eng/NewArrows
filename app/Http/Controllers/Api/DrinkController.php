@@ -8,14 +8,19 @@ use Illuminate\Http\Request;
 
 class DrinkController extends Controller
 {
-    public function index()
+
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['getPromoCode']]);
+    }
+
+    public function index($name)
     {
-        $drinks = Drink::with('restaurant')->get();
+        $drinks = Drink::where('restaurant_name',$name)->get();
         return $drinks;
 
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
 
         $validator =validator($request->all(),$this->rules());
@@ -23,6 +28,7 @@ class DrinkController extends Controller
             return apiResponse($validator->errors()->all(),null,400);
 
         $data = $request->all();
+        $data['restaurant_name'] = $name;
         $data['restaurant_id'] = auth()->id();
         if (Drink::create($data))
             return apiResponse(null,'drink inserted successfully',200);
@@ -35,19 +41,19 @@ class DrinkController extends Controller
         if ($validator->fails())
             return apiResponse($validator->errors()->all(),null,400);
 
-        $drink = Drink::where('restaurant_id',auth()->id())->find($id);
+        $drink = Drink::find($id);
         if (!$drink)
             return apiResponse(null,'drink not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_name'] = $drink->restaurant_name;
         $drink->update($data);
         return apiResponse(null,'drink updated successfully',200);
     }
 
     public function delete($id)
     {
-        $drink=Drink::where('restaurant_id',auth()->id())->find($id);
+        $drink=Drink::find($id);
         if (!$drink)
             return apiResponse(null,'drink not exist',200);
 

@@ -8,13 +8,17 @@ use Illuminate\Http\Request;
 
 class SocialMediaController extends Controller
 {
-    public function index()
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['getPromoCode']]);
+    }
+
+    public function index($name)
     {
-        $socials = SocialMedia::where('restaurant_id', auth()->id())->get();
+        $socials = SocialMedia::where('restaurant_name', $name)->get();
         return $socials;
     }
 
-    public function create(Request $request)
+    public function create(Request $request,$name)
     {
         $validator =validator($request->all(),$this->rules());
         if ($validator->fails())
@@ -22,6 +26,7 @@ class SocialMediaController extends Controller
 
         $data = $request->all();
         $data['restaurant_id'] = auth()->id();
+        $data['restaurant_name'] = $name;
         if (SocialMedia::create($data))
             return apiResponse(null,'Social links and phones inserted successfully',200);
 
@@ -39,7 +44,8 @@ class SocialMediaController extends Controller
             return apiResponse(null,'Social not exist',200);
 
         $data = $request->all();
-        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_id'] = auth()->id();
+//        $data['restaurant_name'] = $name;
         $social->update($data);
 
         return apiResponse(null,'Social links and phones updated successfully',200);
@@ -65,7 +71,8 @@ class SocialMediaController extends Controller
             'facebook'=>'nullable|string',
             'twitter'=>'nullable|string',
             'instagram'=>'nullable|string',
-            'snapchat'=>'nullable|string'
+            'snapchat'=>'nullable|string',
+	        'website'=>'nullable|string'
         ];
     }
 

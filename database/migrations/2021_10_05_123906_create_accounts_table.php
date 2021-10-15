@@ -18,6 +18,7 @@ class CreateAccountsTable extends Migration
             $table->string('tax')->nullable();
             $table->string('delivery_value')->nullable();
             $table->string('fees_value')->nullable();
+            $table->string('restaurant_name')->nullable();
             $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
         });

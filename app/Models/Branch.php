@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Branch extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','lat','lng','restaurant_id'];
+    protected $fillable = ['name','lat','lng','restaurant_id','restaurant_name'];
 
 //    public function setBranchesAttribute($value)
 //    {

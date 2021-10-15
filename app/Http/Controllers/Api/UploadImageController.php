@@ -12,7 +12,7 @@ class UploadImageController extends Controller
         if ($request->has('photo')){
             $imgname = uploadImg($request->file('photo'),'global');
             $url = env('APP_URL').'/uploads/global/'.$imgname;
-            return $url;
+            return apiResponse($url,'photo uploaded successfully',200);
         }
     }
 
